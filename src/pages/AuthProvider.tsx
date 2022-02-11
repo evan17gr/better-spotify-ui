@@ -48,10 +48,6 @@ const AuthProvider = ({ children }: { children: JSX.Element }) => {
     logout,
   };
 
-  useEffect(() => {
-    console.log(token, 'TOKENNNNNNNNNNN');
-  }, [token]);
-
   apiInstance.interceptors.response.use(
     function (response) {
       return response;
@@ -77,11 +73,8 @@ const AuthProvider = ({ children }: { children: JSX.Element }) => {
           .then(async (res) => {
             // If the response is success , then log
             if (res.status == 200) {
-              setAccessToken(res.data.access_token);
-              console.log(res.data.access_token);
-              console.log(originalReq);
               try {
-                await axios({
+                const { data } = await axios({
                   method: originalReq.method,
                   url: originalReq.baseURL + originalReq.url,
                   headers: {
@@ -92,6 +85,9 @@ const AuthProvider = ({ children }: { children: JSX.Element }) => {
                   data: originalReq.data,
                   withCredentials: true,
                 });
+                if (data) {
+                  setAccessToken(res.data.access_token);
+                }
               } catch (err) {
                 console.log(err);
               }

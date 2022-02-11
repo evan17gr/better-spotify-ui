@@ -20,10 +20,26 @@ export default function HomePage() {
     }
   };
 
+  const logout = async () => {
+    try {
+      const response = await apiInstance.get('/user/logout', {
+        headers: { Authorization: 'Bearer ' + token },
+      });
+
+      if (response.status === 200) {
+        router.push('/login');
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     if (router.isReady) {
-      const { access_token } = router.query;
-      if (access_token && typeof access_token === 'string') {
+      const { access_token, error } = router.query;
+      if (error) {
+        router.push('/login');
+      } else if (access_token && typeof access_token === 'string') {
         login();
         setAccessToken(access_token);
         fetchUserData(access_token);
@@ -35,7 +51,7 @@ export default function HomePage() {
 
   return (
     <main>
-      <h1>Hello World!</h1>
+      <button onClick={logout}>Logout</button>
     </main>
   );
 }

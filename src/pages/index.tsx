@@ -34,6 +34,18 @@ export default function HomePage() {
     }
   };
 
+  const getTopTracks = async (type: 'artits' | 'tracks') => {
+    setHasMounted(false);
+    try {
+      const response = await apiInstance.get(`/user/getTopItems/${type}`, {
+        headers: { Authorization: 'Bearer ' + token },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+    setHasMounted(true);
+  };
+
   useEffect(() => {
     if (router.isReady) {
       const { access_token, error } = router.query;
@@ -52,6 +64,7 @@ export default function HomePage() {
   return (
     <main>
       <button onClick={logout}>Logout</button>
+      <button onClick={() => getTopTracks('tracks')}>Get Top Tracks</button>
     </main>
   );
 }

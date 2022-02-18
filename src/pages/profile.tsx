@@ -20,6 +20,16 @@ export default function Profile() {
     }
   };
 
+  const getTopTracks = async (bearerToken: string) => {
+    try {
+      const { data } = await apiInstance.get('/user/profile', {
+        headers: { Authorization: 'Bearer ' + bearerToken },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const logout = async () => {
     try {
       const response = await apiInstance.get('/user/logout', {

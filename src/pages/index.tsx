@@ -12,7 +12,7 @@ export default function HomePage() {
 
   const fetchUserData = async (bearerToken: string) => {
     try {
-      const { data } = await apiInstance.get('/user/profile', {
+      const { data } = await apiInstance.get(`/user/profile/${name}`, {
         headers: { Authorization: 'Bearer ' + bearerToken },
       });
     } catch (err) {
@@ -47,6 +47,7 @@ export default function HomePage() {
   };
 
   useEffect(() => {
+    console.log('hello');
     if (router.isReady) {
       const { access_token, error } = router.query;
       if (error) {
